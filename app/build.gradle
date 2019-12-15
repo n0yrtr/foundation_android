@@ -51,25 +51,22 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    // Support Libraries
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    def support_library_version = '27.1.1'
-    implementation "com.android.support:appcompat-v7:$support_library_version"
-    implementation "com.android.support:recyclerview-v7:$support_library_version"
-    implementation "com.android.support:design:$support_library_version"
-    implementation "com.android.support:support-v4:$support_library_version"
-    implementation "com.android.support:exifinterface:$support_library_version"
-    implementation 'com.android.support:multidex:1.0.3'
-
-    // AndroidX
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    // AndroidX (support Library)
+    implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.core:core-ktx:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation "androidx.legacy:legacy-support-v4:1.0.0"
+    def support_library_version = '1.1.0'
+    implementation "androidx.appcompat:appcompat:$support_library_version"
+    implementation "androidx.recyclerview:recyclerview:$support_library_version"
+    implementation "com.google.android.material:material:1.2.0-alpha02"
+    implementation "androidx.exifinterface:exifinterface:$support_library_version"
 
     // Architecture Components
-    def arch_version = '1.1.1'
-    implementation "android.arch.lifecycle:extensions:$arch_version"
-    annotationProcessor "android.arch.lifecycle:compiler:$arch_version"
-    kapt "android.arch.lifecycle:compiler:$arch_version"
+    def arch_version = '2.1.0'
+    implementation "androidx.lifecycle:lifecycle-extensions:$arch_version"
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$arch_version"
+    kapt "androidx.lifecycle:lifecycle-compiler:$arch_version"
 
     //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
