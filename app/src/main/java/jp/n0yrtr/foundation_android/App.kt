@@ -5,6 +5,7 @@ import android.util.Log
 import android.webkit.WebView
 import androidx.multidex.MultiDexApplication
 import com.facebook.stetho.Stetho
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -13,10 +14,14 @@ import io.reactivex.exceptions.UndeliverableException
 import io.reactivex.plugins.RxJavaPlugins
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import jp.n0yrtr.foundation_android.di.DaggerAppComponent
 import jp.n0yrtr.foundation_android.di.applyAutoInjector
+import timber.log.Timber
+import timber.log.Timber.DebugTree
 import java.io.IOException
 import java.net.UnknownHostException
 import javax.inject.Inject
+
 
 class App : MultiDexApplication(), HasActivityInjector {
 
@@ -27,15 +32,21 @@ class App : MultiDexApplication(), HasActivityInjector {
     @Inject
     lateinit var activityLifecycleCallbacks: ActivityLifecycleCallbacks
 
+    lateinit var mFirebaseAnalytics: FirebaseAnalytics
+
     override fun activityInjector(): AndroidInjector<Activity> {
         return dispatchingActivityInjector
     }
 
     override fun onCreate() {
         super.onCreate()
-
+        DaggerAppComponent.builder()
+            .application(this)
+            .build().inject(this)
         applyAutoInjector()
         setupRealm()
+        setupTimber()
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         appLifecycleCallbacks.onCreate(this)
         registerActivityLifecycleCallbacks(activityLifecycleCallbacks)
 
@@ -45,13 +56,13 @@ class App : MultiDexApplication(), HasActivityInjector {
             if (exception is UndeliverableException) {
                 exception = it.cause
             }
-            Log.d(this.javaClass.simpleName, "%s".format(exception.javaClass.simpleName), exception)
+            Timber.d(exception, "%s".format(exception.javaClass.simpleName))
             if (exception is UnknownHostException) {
-                Log.d(this.javaClass.simpleName, "UnknownHostException")
+                Timber.d("UnknownHostException")
                 return@setErrorHandler
             }
             if ((exception is IOException)) {
-                Log.d(this.javaClass.simpleName, "IOException")
+                Timber.d("IOException")
                 // fine, irrelevant network problem or API that throws on cancellation
                 return@setErrorHandler
             }
@@ -69,12 +80,21 @@ class App : MultiDexApplication(), HasActivityInjector {
                 Thread.currentThread().uncaughtExceptionHandler.uncaughtException(Thread.currentThread(), exception)
                 return@setErrorHandler
             }
-            Log.w("Undeliverable exception", exception.cause)
+            Timber.tag("Undeliverable exception").w(exception.cause)
         }
 
         if (BuildConfig.DEBUG) {
             WebView.setWebContentsDebuggingEnabled(true);
         }
+    }
+
+    /**
+     * timberのセットアップ
+     */
+    private fun setupTimber() {
+        // Debugビルド時のみログを出力する
+        Timber.plant(DebugTree())
+        Timber.d("SetupTimber forDebug")
     }
 
     override fun onTerminate() {
