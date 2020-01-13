@@ -8,7 +8,7 @@ import jp.n0yrtr.foundation_android.MyAppLifecycleCallbacks
 import jp.n0yrtr.foundation_android.MyLifecycleHandler
 import javax.inject.Singleton
 
-@Module(includes = [])
+@Module(includes = [DataModule::class])
 class AppModule {
     @Singleton
     @Provides
