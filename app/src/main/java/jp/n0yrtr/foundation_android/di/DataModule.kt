@@ -55,10 +55,7 @@ internal object DataModule {
     fun providesOkHttp(app: App): OkHttpClient {
         val logging = getHttpLoggingInterceptor()
         val builder = OkHttpClient.Builder()
-        val sslContext = SSLContext.getInstance("TLS")
-        sslContext.init(null, getTrustManager(app), null)
         return builder.connectionSpecs(listOf(ConnectionSpec.MODERN_TLS, ConnectionSpec.CLEARTEXT))
-            .sslSocketFactory(sslContext.socketFactory)
             .hostnameVerifier(HostnameVerifier { hostname, session ->
                 true
             })
@@ -119,32 +116,6 @@ internal object DataModule {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
     }
 
-    @Throws(NoSuchAlgorithmException::class, KeyStoreException::class)
-    private fun getTrustManager(context: App): Array<TrustManager> {
-        val trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
-        val trustManagers = trustManagerFactory.trustManagers
-        if (trustManagers.size != 1 || trustManagers[0] !is X509TrustManager) {
-            throw IllegalStateException("Unexpected default trust managers:" + Arrays.toString(trustManagers))
-        }
-        return trustManagers
-    }
-
-
-    @Throws(CertificateException::class, KeyStoreException::class)
-    fun loadX509Certificate(ks: KeyStore, `is`: InputStream) {
-        try {
-            val factory = CertificateFactory.getInstance("X.509")
-            val x509 = factory.generateCertificate(`is`) as X509Certificate
-            val alias = x509.subjectDN.name
-            ks.setCertificateEntry(alias, x509)
-        } finally {
-            try {
-                `is`.close()
-            } catch (e: IOException) {
-                throw e
-            }
-        }
-    }
 
     private fun Request.bodyToString(): String {
         return try {

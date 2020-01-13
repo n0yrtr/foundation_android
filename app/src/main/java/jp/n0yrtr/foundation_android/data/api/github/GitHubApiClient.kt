@@ -17,7 +17,7 @@ interface GitHubApiClient {
     /**
      * ユーザー情報取得API
      */
-    @GET("/users/n0yrtr")
+    @GET("users/n0yrtr")
     fun getUser(): Single<ResponseGetUser>
 
 }
