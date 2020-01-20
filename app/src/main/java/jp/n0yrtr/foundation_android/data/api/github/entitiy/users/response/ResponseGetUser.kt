@@ -5,19 +5,19 @@ import com.squareup.moshi.Json
 
 data class ResponseGetUser(
     @Json(name = "avatar_url")
-    val avatarUrl: String,
+    val avatarUrl: String?,
     @Json(name = "bio")
-    val bio: Any,
+    val bio: String?,
     @Json(name = "blog")
-    val blog: String,
+    val blog: String?,
     @Json(name = "company")
-    val company: Any,
+    val company: String?,
     @Json(name = "created_at")
     val createdAt: String,
     @Json(name = "email")
-    val email: Any,
+    val email: String?,
     @Json(name = "events_url")
-    val eventsUrl: String,
+    val eventsUrl: String?,
     @Json(name = "followers")
     val followers: Int,
     @Json(name = "followers_url")
@@ -25,45 +25,45 @@ data class ResponseGetUser(
     @Json(name = "following")
     val following: Int,
     @Json(name = "following_url")
-    val followingUrl: String,
+    val followingUrl: String?,
     @Json(name = "gists_url")
-    val gistsUrl: String,
+    val gistsUrl: String?,
     @Json(name = "gravatar_id")
-    val gravatarId: String,
+    val gravatarId: String?,
     @Json(name = "hireable")
-    val hireable: Any,
+    val hireable: String?,
     @Json(name = "html_url")
-    val htmlUrl: String,
+    val htmlUrl: String?,
     @Json(name = "id")
-    val id: Int,
+    val id: Int?,
     @Json(name = "location")
-    val location: Any,
+    val location: String?,
     @Json(name = "login")
-    val login: String,
+    val login: String?,
     @Json(name = "name")
     val name: String,
     @Json(name = "node_id")
-    val nodeId: String,
+    val nodeId: String?,
     @Json(name = "organizations_url")
-    val organizationsUrl: String,
+    val organizationsUrl: String?,
     @Json(name = "public_gists")
-    val publicGists: Int,
+    val publicGists: Int?,
     @Json(name = "public_repos")
-    val publicRepos: Int,
+    val publicRepos: Int?,
     @Json(name = "received_events_url")
-    val receivedEventsUrl: String,
+    val receivedEventsUrl: String?,
     @Json(name = "repos_url")
     val reposUrl: String,
     @Json(name = "site_admin")
-    val siteAdmin: Boolean,
+    val siteAdmin: Boolean?,
     @Json(name = "starred_url")
-    val starredUrl: String,
+    val starredUrl: String?,
     @Json(name = "subscriptions_url")
-    val subscriptionsUrl: String,
+    val subscriptionsUrl: String?,
     @Json(name = "type")
-    val type: String,
+    val type: String?,
     @Json(name = "updated_at")
-    val updatedAt: String,
+    val updatedAt: String?,
     @Json(name = "url")
-    val url: String
+    val url: String?
 )
